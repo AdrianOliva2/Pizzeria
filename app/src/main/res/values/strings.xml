@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Pizzeria</string>
+    <string name="usuario">Usuario</string>
+    <string name="nombre_de_usuario">Nombre de usuario</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="text_contrase_a">Contraseña</string>
+    <string name="reg_strate">Regístrate</string>
+    <string name="iniciar_sesi_n">Iniciar sesión</string>
+</resources>
