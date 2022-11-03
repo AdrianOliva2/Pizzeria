@@ -1,9 +1,10 @@
 package com.example.pizzeria.clases
 
 import android.os.Build
+import java.io.Serializable
 import java.util.Base64
 
-class Usuario (private var nombreUsuario: String, contrasenna: String) {
+class Usuario (private var nombreUsuario: String, contrasenna: String): Serializable {
 
     private var contrasenna: String
 

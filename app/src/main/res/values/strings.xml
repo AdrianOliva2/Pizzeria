@@ -6,4 +6,5 @@
     <string name="text_contrase_a">Contraseña</string>
     <string name="reg_strate">Regístrate</string>
     <string name="iniciar_sesi_n">Iniciar sesión</string>
+    <string name="textview">TextView</string>
 </resources>

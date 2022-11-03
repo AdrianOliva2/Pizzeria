@@ -57,7 +57,9 @@ class MainActivity : Activity(), View.OnClickListener {
                     val usuario: Usuario? = daoUsuarios?.getUsuario(Usuario(txtNombre.text.toString(), txtContrasenna.text.toString()))
                     if (usuario != null) {
                         if (cifrar(txtContrasenna.text.toString()) == usuario.getContrasenna()) {
-                            startActivity(Intent(this, LoggedInActivity::class.java))
+                            val intent: Intent = Intent(this, LoggedInActivity::class.java)
+                            intent.putExtra("usuario", Usuario(txtNombre?.text.toString(), txtContrasenna?.text.toString()))
+                            startActivity(intent)
                         } else {
                             val alert: AlertDialog.Builder = AlertDialog.Builder(this)
                             alert.setMessage("Contraseña incorrecta")
@@ -69,11 +71,10 @@ class MainActivity : Activity(), View.OnClickListener {
                     } else {
                         val alert: AlertDialog.Builder = AlertDialog.Builder(this)
                         alert.setMessage("Aún no te has registrado, regístrate")
-                        alert.setPositiveButton("Ok") {_, _ ->}
+                        alert.setPositiveButton("Ok") {_, _ -> startActivity(Intent(this, RegisterActivity::class.java))}
                         alert.setIcon(0)
                         alert.create()
                         alert.show()
-                        startActivity(Intent(this, RegisterActivity::class.java))
                     }
                 } else run {
                     val alert: AlertDialog.Builder = AlertDialog.Builder(this)
