@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PedidoActivity">
+
+    <Button
+        android:id="@+id/btnFavorita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="89dp"
+        android:layout_marginTop="75dp"
+        android:text="@string/favorita"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnPersonalizada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/personalizada"
+        app:layout_constraintStart_toStartOf="@+id/btnFavorita"
+        app:layout_constraintTop_toBottomOf="@+id/btnFavorita" />
+
+    <Button
+        android:id="@+id/btnPredeterminadas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/predeterminadas"
+        app:layout_constraintStart_toStartOf="@+id/btnPersonalizada"
+        app:layout_constraintTop_toBottomOf="@+id/btnPersonalizada" />
+</androidx.constraintlayout.widget.ConstraintLayout>

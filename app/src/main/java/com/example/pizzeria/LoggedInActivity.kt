@@ -17,8 +17,10 @@ class LoggedInActivity : Activity(), View.OnClickListener {
         setContentView(R.layout.activity_logged_in)
         usuario = intent.getSerializableExtra("usuario") as Usuario?
         val btnWeb: Button = findViewById(R.id.btnWeb)
+        val btnPedido: Button = findViewById(R.id.btnPedido)
         val btnConfig: Button = findViewById(R.id.btnConfig)
         btnWeb.setOnClickListener(this)
+        btnPedido.setOnClickListener(this)
         btnConfig.setOnClickListener(this)
     }
 
@@ -28,6 +30,9 @@ class LoggedInActivity : Activity(), View.OnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse("https://www.telepizza.es/")
                 startActivity(intent)
+            }
+            R.id.btnPedido -> {
+                startActivity(Intent(this, PedidoActivity::class.java))
             }
             R.id.btnConfig -> {
                 startActivity(Intent(this, ConfigActivity::class.java))

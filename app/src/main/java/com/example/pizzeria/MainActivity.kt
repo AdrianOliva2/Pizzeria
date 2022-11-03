@@ -12,6 +12,7 @@ import android.widget.EditText
 import com.example.pizzeria.clases.Usuario
 import com.example.pizzeria.dao.DAOUsuarios
 import java.util.Base64
+import kotlin.system.exitProcess
 
 class MainActivity : Activity(), View.OnClickListener {
 

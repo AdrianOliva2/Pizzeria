@@ -13,6 +13,20 @@
         android:theme="@style/Theme.Pizzeria"
         tools:targetApi="31">
         <activity
+            android:name=".PizzasPredeterminadasActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".PedidoActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ConfigActivity"
             android:exported="false">
             <meta-data

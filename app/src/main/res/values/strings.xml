@@ -7,4 +7,10 @@
     <string name="reg_strate">Regístrate</string>
     <string name="iniciar_sesi_n">Iniciar sesión</string>
     <string name="textview">TextView</string>
+    <string name="color">Color</string>
+    <string name="aplicar_color">Aplicar color</string>
+    <string name="personalizada">Personalizada</string>
+    <string name="predeterminadas">Predeterminadas</string>
+    <string name="favorita">Favorita</string>
+    <string name="pizza">Pizza</string>
 </resources>
