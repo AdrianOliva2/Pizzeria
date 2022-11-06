@@ -5,20 +5,22 @@ import java.io.Serializable
 
 class Pizza: Serializable {
 
-    private lateinit var ingredientes: List<String>
-    private lateinit var salsas: List<String>
-    private var tamanno: Tamanno?
+    private var PRECIO_POR_SALSA: Float = 0.5F
+    private var PRECIO_POR_INGREDIENTE: Float = 1F
+    private var ingredientes: List<String>
+    private var salsas: List<String>
+    private var tamanno: Tamanno
 
     constructor() {
         this.ingredientes = ArrayList()
         this.salsas = ArrayList()
-        this.tamanno = null
+        this.tamanno = Tamanno.PEQUENNA
     }
 
     constructor(ingredientes: List<String>, salsas: List<String>) {
         this.ingredientes = ingredientes
         this.salsas = salsas
-        this.tamanno = null
+        this.tamanno = Tamanno.PEQUENNA
     }
 
     constructor(ingredientes: List<String>, salsas: List<String>, tamanno: Tamanno) {
@@ -51,8 +53,12 @@ class Pizza: Serializable {
         this.tamanno = tamanno
     }
 
+    fun calcularPrecio(): Float {
+        return tamanno.getPrecioBase() + (ingredientes.size * PRECIO_POR_INGREDIENTE) + (salsas.size * PRECIO_POR_SALSA)
+    }
+
     override fun toString(): String {
-        return "Pizza:\n\tingredientes:\n\t\t${ingredientes.toString().replace("[", "").replace("]", "")}\n\tsalsas:\n\t\t${salsas.toString().replace("[", "").replace("]", "")}\n\ttamanno:\n\t\t$tamanno"
+        return "Pizza:\n\t\tingredientes:\n\t\t\t\t${ingredientes.toString().replace("[", "").replace("]", "")}\n\t\tsalsas:\n\t\t\t\t${salsas.toString().replace("[", "").replace("]", "")}\n\t\ttamaño:\n\t\t\t\t$tamanno\n\t\tprecio:\n\t\t\t\t${calcularPrecio()}€"
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.pizzeria
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +12,7 @@ import android.widget.ListView
 import com.example.pizzeria.clases.Pizza
 import com.example.pizzeria.enums.Tamanno
 
-class PizzasPredeterminadasActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
+class PizzasPredeterminadasActivity : Activity(), AdapterView.OnItemClickListener {
 
     private lateinit var lstPizzasPredeterminadas: ListView
     private lateinit var pizzas: Map<String, Pizza>
@@ -22,7 +23,7 @@ class PizzasPredeterminadasActivity : AppCompatActivity(), AdapterView.OnItemCli
         lstPizzasPredeterminadas = findViewById(R.id.lstPizzasPredeterminadas)
         val pizzaBBQFamiliar = Pizza(arrayListOf("Bacon", "Pollo", "Queso", "Carne de vacuno"), arrayListOf("Barbacoa"), Tamanno.FAMILIAR)
         val pizzaBBQMediana = Pizza(arrayListOf("Bacon", "Pollo", "Queso", "Carne de vacuno"), arrayListOf("Barbacoa"), Tamanno.MEDIANA)
-        val pizzaBBQPequenna = Pizza(arrayListOf("Bacon", "Pollo", "Queso", "Carne de vacuno"), arrayListOf("Barbacoa"), Tamanno.FAMILIAR)
+        val pizzaBBQPequenna = Pizza(arrayListOf("Bacon", "Pollo", "Queso", "Carne de vacuno"), arrayListOf("Barbacoa"), Tamanno.PEQUENNA)
         pizzas = mapOf(Pair("BBQ Familiar", pizzaBBQFamiliar), Pair("BBQ Mediana", pizzaBBQMediana), Pair("BBQ Pequeña", pizzaBBQPequenna))
         val adapter: ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_list_item_1, pizzas.keys.toList())
         lstPizzasPredeterminadas.adapter = adapter
@@ -36,6 +37,9 @@ class PizzasPredeterminadasActivity : AppCompatActivity(), AdapterView.OnItemCli
             val intent = Intent(this, ConfirmacionPedidoActivity::class.java)
             intent.putExtra("pizza", pizza)
             startActivity(intent)
+            finish()
         }
     }
+
+    override fun onBackPressed() {}
 }

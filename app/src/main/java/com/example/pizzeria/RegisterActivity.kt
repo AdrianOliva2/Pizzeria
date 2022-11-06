@@ -31,6 +31,7 @@ class RegisterActivity : Activity(), View.OnClickListener {
         when (view.id) {
             R.id.btnIniciarSesion2 -> {
                 startActivity(Intent(this, MainActivity::class.java))
+                finish()
             }
             R.id.btnRegistrarse2 -> {
                 if (txtNombre?.text.toString() != "") {
@@ -40,6 +41,7 @@ class RegisterActivity : Activity(), View.OnClickListener {
                             val intent: Intent = Intent(this, LoggedInActivity::class.java)
                             intent.putExtra("usuario", Usuario(txtNombre?.text.toString(), txtContrasenna?.text.toString()))
                             startActivity(intent)
+                            finish()
                         } else {
                             val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
                             alertDialog.setMessage("Introduce la contraseña")
@@ -50,7 +52,7 @@ class RegisterActivity : Activity(), View.OnClickListener {
                     } else {
                         val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
                         alertDialog.setMessage("Ya estás registrado, ¿quieres iniciar sesión?")
-                        alertDialog.setPositiveButton("Si") {_, _ -> startActivity(Intent(this, MainActivity::class.java))}
+                        alertDialog.setPositiveButton("Si") {_, _ -> startActivity(Intent(this, MainActivity::class.java)); finish()}
                         alertDialog.setNegativeButton("No") {_, _ -> txtNombre?.setText(""); txtContrasenna?.setText("")}
                         alertDialog.create()
                         alertDialog.show()
@@ -66,5 +68,5 @@ class RegisterActivity : Activity(), View.OnClickListener {
         }
     }
 
-    override fun onBackPressed() { }
+    override fun onBackPressed() {}
 }

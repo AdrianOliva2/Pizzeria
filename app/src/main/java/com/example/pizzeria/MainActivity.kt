@@ -61,6 +61,7 @@ class MainActivity : Activity(), View.OnClickListener {
                             val intent: Intent = Intent(this, LoggedInActivity::class.java)
                             intent.putExtra("usuario", Usuario(txtNombre?.text.toString(), txtContrasenna?.text.toString()))
                             startActivity(intent)
+                            finish()
                         } else {
                             val alert: AlertDialog.Builder = AlertDialog.Builder(this)
                             alert.setMessage("Contraseña incorrecta")
@@ -72,7 +73,7 @@ class MainActivity : Activity(), View.OnClickListener {
                     } else {
                         val alert: AlertDialog.Builder = AlertDialog.Builder(this)
                         alert.setMessage("Aún no te has registrado, regístrate")
-                        alert.setPositiveButton("Ok") {_, _ -> startActivity(Intent(this, RegisterActivity::class.java))}
+                        alert.setPositiveButton("Ok") {_, _ -> startActivity(Intent(this, RegisterActivity::class.java)); finish()}
                         alert.setIcon(0)
                         alert.create()
                         alert.show()
@@ -89,6 +90,7 @@ class MainActivity : Activity(), View.OnClickListener {
 
             R.id.btnRegistrarse -> {
                 startActivity(Intent(this, RegisterActivity::class.java))
+                finish()
             }
         }
     }

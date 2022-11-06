@@ -1,11 +1,12 @@
 package com.example.pizzeria
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import com.example.pizzeria.clases.Pizza
 
-class ConfirmacionPedidoActivity : AppCompatActivity() {
+class ConfirmacionPedidoActivity : Activity() {
 
     private lateinit var pizza: Pizza
 
@@ -17,4 +18,5 @@ class ConfirmacionPedidoActivity : AppCompatActivity() {
         lblPedido.text = pizza.toString()
     }
 
+    override fun onBackPressed() {}
 }

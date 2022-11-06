@@ -1,6 +1,7 @@
 package com.example.pizzeria
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,7 +9,7 @@ import android.view.View
 import android.widget.Button
 import com.example.pizzeria.R
 
-class PedidoActivity : AppCompatActivity(), View.OnClickListener {
+class PedidoActivity : Activity(), View.OnClickListener {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +32,10 @@ class PedidoActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btnPredeterminadas -> {
                 startActivity(Intent(this, PizzasPredeterminadasActivity::class.java))
+                finish()
             }
         }
     }
+
+    override fun onBackPressed() {}
 }
