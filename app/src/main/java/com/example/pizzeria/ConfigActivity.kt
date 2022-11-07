@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 
 class ConfigActivity : Activity(), View.OnClickListener {
 
+    private var intExtra: Int = -1
     lateinit var cmbBoxColor: Spinner
     lateinit var layout: ConstraintLayout
 
@@ -22,10 +23,14 @@ class ConfigActivity : Activity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_config)
-        cmbBoxColor = findViewById(R.id.cmbBoxColor)
         layout = findViewById(R.id.ctrLayout)
+        intExtra = intent.getIntExtra("colorFondo", -1)
+        if (intExtra != -1) {
+            layout.setBackgroundColor(intExtra)
+        }
+        cmbBoxColor = findViewById(R.id.cmbBoxColor)
         val btnAplicar: Button = findViewById(R.id.btnAplicar)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayOf("Rojo", "Verde", "Azul", "Negro", "Blanco"))
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayOf("Rojo", "Verde", "Azul", "Negro", "Gris"))
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         cmbBoxColor.adapter = adapter
         btnAplicar.setOnClickListener(this)
@@ -35,7 +40,6 @@ class ConfigActivity : Activity(), View.OnClickListener {
         when (view.id) {
             R.id.btnAplicar -> {
                 when (cmbBoxColor.selectedItem as String) {
-
                     "Rojo" -> {
                         layout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
                     }
@@ -48,13 +52,14 @@ class ConfigActivity : Activity(), View.OnClickListener {
                     "Negro" -> {
                         layout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.black))
                     }
-                    "Blanco" -> {
-                        layout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.white))
+                    "Gris" -> {
+                        layout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray))
                     }
                 }
                 val intent = Intent(this, LoggedInActivity::class.java)
                 intent.putExtra("colorFondo", (layout.background as ColorDrawable).color)
                 startActivity(intent)
+                finish()
             }
         }
     }

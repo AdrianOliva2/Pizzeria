@@ -14,4 +14,6 @@
     <string name="favorita">Favorita</string>
     <string name="pizza">Pizza</string>
     <string name="pizzas">Pizzas</string>
+    <string name="aplicar_cambios">Aplicar Cambios</string>
+    <string name="confirmar_pedido">Confirmar pedido</string>
 </resources>

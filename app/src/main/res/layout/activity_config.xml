@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="66dp"
-        android:text="@string/aplicar_color"
+        android:text="@string/aplicar_cambios"
         app:layout_constraintStart_toStartOf="@+id/cmbBoxColor"
         app:layout_constraintTop_toBottomOf="@+id/cmbBoxColor" />
 </androidx.constraintlayout.widget.ConstraintLayout>
