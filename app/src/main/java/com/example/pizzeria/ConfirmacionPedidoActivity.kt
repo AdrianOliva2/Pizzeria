@@ -19,9 +19,11 @@ class ConfirmacionPedidoActivity : PlantillaActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirmacion_pedido)
+        val layout: ConstraintLayout = findViewById(R.id.ctrLayout8)
         if (backgroundColor != -1) {
-            val layout: ConstraintLayout = findViewById(R.id.ctrLayout8)
             layout.setBackgroundColor(backgroundColor)
+        } else {
+            layout.background = null
         }
         pizza = intent.getSerializableExtra("pizza") as Pizza
         val lblPedido: TextView = findViewById(R.id.lblPedido)

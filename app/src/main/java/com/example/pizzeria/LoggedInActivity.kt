@@ -16,9 +16,11 @@ class LoggedInActivity : PlantillaActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logged_in)
+        layout = findViewById(R.id.ctrLayout3)
         if (backgroundColor != -1) {
-            layout = findViewById(R.id.ctrLayout3)
             layout.setBackgroundColor(backgroundColor)
+        } else {
+            layout.background = null
         }
         usuario = intent.getSerializableExtra("usuario") as Usuario?
         val btnWeb: Button = findViewById(R.id.btnWeb)

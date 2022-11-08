@@ -13,11 +13,15 @@ class DAOUsuarios private constructor(private var usuarios: List<Usuario> = Arra
         }
     }
 
-    fun getUsuarios(): List<Usuario> {
+    init {
         usuarios += Usuario("Adrian_oliva", "1234Abcd")
+    }
 
-        for (usuario: Usuario in usuarios) println(usuario)
+    fun resetearUsuarios() {
+        usuarios = ArrayList()
+    }
 
+    fun getUsuarios(): List<Usuario> {
         return usuarios
     }
 
@@ -30,7 +34,7 @@ class DAOUsuarios private constructor(private var usuarios: List<Usuario> = Arra
     }
 
     fun insertarUsuario(usuario: Usuario): Boolean {
-        var insertado: Boolean = true
+        var insertado = true
 
         if (usuarios.contains(usuario)) insertado = false
         else usuarios += usuario

@@ -18,14 +18,17 @@ class PedidoActivity : PlantillaActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pedido)
+        val layout: ConstraintLayout = findViewById(R.id.ctrLayout4)
         if (backgroundColor != -1) {
-            val layout: ConstraintLayout = findViewById(R.id.ctrLayout4)
             layout.setBackgroundColor(backgroundColor)
+        } else {
+            layout.background = null
         }
         val btnFavorita: Button = findViewById(R.id.btnFavorita)
         val btnPersonalizada: Button = findViewById(R.id.btnPersonalizada)
         val btnPredeterminadas: Button = findViewById(R.id.btnPredeterminadas)
         btnFavorita.setOnClickListener(this)
+        btnFavorita.isEnabled = pizzaFavorita
         btnPersonalizada.setOnClickListener(this)
         btnPredeterminadas.setOnClickListener(this)
     }

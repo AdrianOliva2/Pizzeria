@@ -20,9 +20,11 @@ class RegisterActivity : PlantillaActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+        val layout: ConstraintLayout = findViewById(R.id.ctrLayout2)
         if (backgroundColor != -1) {
-            val layout: ConstraintLayout = findViewById(R.id.ctrLayout2)
             layout.setBackgroundColor(backgroundColor)
+        } else {
+            layout.background = null
         }
         txtNombre = findViewById(R.id.txtNombre2)
         txtContrasenna = findViewById(R.id.txtContrasenna2)

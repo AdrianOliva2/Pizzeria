@@ -19,9 +19,11 @@ class PizzasPredeterminadasActivity : PlantillaActivity(), AdapterView.OnItemCli
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pizzas_predeterminadas)
+        val layout: ConstraintLayout = findViewById(R.id.ctrLayout7)
         if (backgroundColor != -1) {
-            val layout: ConstraintLayout = findViewById(R.id.ctrLayout7)
             layout.setBackgroundColor(backgroundColor)
+        } else {
+            layout.background = null
         }
         lstPizzasPredeterminadas = findViewById(R.id.lstPizzasPredeterminadas)
         val pizzaBBQFamiliar = Pizza(arrayListOf("Bacon", "Pollo", "Queso", "Carne de vacuno"), arrayListOf("Barbacoa"), Tamanno.FAMILIAR)

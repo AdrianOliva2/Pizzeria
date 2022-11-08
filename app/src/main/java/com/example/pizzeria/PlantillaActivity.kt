@@ -7,7 +7,10 @@ import android.os.Bundle
 
 open class PlantillaActivity : Activity() {
 
-    protected companion object{ var backgroundColor: Int = -1 }
+    protected companion object {
+        var backgroundColor: Int = -1
+        var pizzaFavorita: Boolean = true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,6 +19,7 @@ open class PlantillaActivity : Activity() {
 
     fun createFromTemplate() {
         backgroundColor = getSharedPreferences("Config", Context.MODE_PRIVATE).getInt("backgroundColor", -1)
+        pizzaFavorita = getSharedPreferences("Config", Context.MODE_PRIVATE).getBoolean("pizzaPredeterminada", true)
     }
 
     override fun onBackPressed() { }

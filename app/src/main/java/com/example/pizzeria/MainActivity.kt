@@ -1,11 +1,17 @@
 package com.example.pizzeria
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pizzeria.clases.Usuario
@@ -17,24 +23,34 @@ class MainActivity : PlantillaActivity(), View.OnClickListener {
     private lateinit var usuarios: List<Usuario>
     private lateinit var txtNombre: EditText
     private lateinit var txtContrasenna: EditText
+    private lateinit var chkBoxMantenerSesion: CheckBox
     private var daoUsuarios: DAOUsuarios? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         super.createFromTemplate()
+        val layout: ConstraintLayout = findViewById(R.id.ctrLayout1)
         if (backgroundColor != -1) {
-            val layout: ConstraintLayout = findViewById(R.id.ctrLayout1)
             layout.setBackgroundColor(backgroundColor)
+        } else {
+            layout.background = null
         }
         daoUsuarios = DAOUsuarios.getInstance()
         if (daoUsuarios != null) usuarios = DAOUsuarios.getInstance()?.getUsuarios()!!
         txtNombre = findViewById(R.id.txtNombre)
-        txtContrasenna= findViewById(R.id.txtContrasenna)
+        txtContrasenna = findViewById(R.id.txtContrasenna)
+        chkBoxMantenerSesion = findViewById(R.id.chkBoxMantenerSesion)
         val btnIniciarSesion: Button = findViewById(R.id.btnIniciarSesion)
         val btnRegistro: Button = findViewById(R.id.btnRegistrarse)
         btnIniciarSesion.setOnClickListener(this)
         btnRegistro.setOnClickListener(this)
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Config", Context.MODE_PRIVATE)
+        if (sharedPreferences.getString("mantenerNombreUsuario", "") != "" && sharedPreferences.getString("mantenerContrasenna", "") != "") {
+            val intent = Intent(this, LoggedInActivity::class.java)
+            intent.putExtra("usuario", Usuario(sharedPreferences.getString("mantenerNombreUsuario", ""), sharedPreferences.getString("mantenerContrasenna", "")))
+            startActivity(intent)
+        }
     }
 
     override fun onBackPressed() {
@@ -61,7 +77,13 @@ class MainActivity : PlantillaActivity(), View.OnClickListener {
                     val usuario: Usuario? = daoUsuarios?.getUsuario(Usuario(txtNombre.text.toString(), txtContrasenna.text.toString()))
                     if (usuario != null) {
                         if (cifrar(txtContrasenna.text.toString()) == usuario.getContrasenna()) {
-                            val intent: Intent = Intent(this, LoggedInActivity::class.java)
+                            if (chkBoxMantenerSesion.isChecked) {
+                                val editor: SharedPreferences.Editor = getSharedPreferences("Config", Context.MODE_PRIVATE).edit()
+                                editor.putString("mantenerNombreUsuario", txtNombre.text.toString())
+                                editor.putString("mantenerContrasenna", txtContrasenna.text.toString())
+                                editor.apply()
+                            }
+                            val intent = Intent(this, LoggedInActivity::class.java)
                             intent.putExtra("usuario", Usuario(txtNombre?.text.toString(), txtContrasenna?.text.toString()))
                             startActivity(intent)
                             finish()

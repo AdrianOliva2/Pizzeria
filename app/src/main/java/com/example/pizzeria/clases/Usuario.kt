@@ -4,23 +4,23 @@ import android.os.Build
 import java.io.Serializable
 import java.util.Base64
 
-class Usuario (private var nombreUsuario: String, contrasenna: String): Serializable {
+class Usuario (private var nombreUsuario: String?, contrasenna: String?): Serializable {
 
-    private var contrasenna: String
+    private var contrasenna: String?
 
     init {
         this.contrasenna = cifrar(contrasenna)
     }
 
-    private fun cifrar(contrasenna: String): String {
+    private fun cifrar(contrasenna: String?): String? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    Base64.getEncoder().encodeToString(contrasenna.toByteArray(Charsets.UTF_8))
+                    Base64.getEncoder().encodeToString(contrasenna?.toByteArray(Charsets.UTF_8))
                 } else {
                     contrasenna
                 }
     }
 
-    fun getNombreUsuario(): String {
+    fun getNombreUsuario(): String? {
         return this.nombreUsuario
     }
 
@@ -28,7 +28,7 @@ class Usuario (private var nombreUsuario: String, contrasenna: String): Serializ
         this.nombreUsuario = nombreUsuario
     }
 
-    fun getContrasenna(): String {
+    fun getContrasenna(): String? {
         return this.contrasenna
     }
 

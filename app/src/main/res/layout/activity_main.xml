@@ -64,8 +64,8 @@
         android:id="@+id/btnRegistrarse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="76dp"
         android:background="#0090FF"
         android:padding="10dp"
         android:text="@string/reg_strate"
@@ -77,12 +77,23 @@
         android:id="@+id/btnIniciarSesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="52dp"
         android:background="#0090FF"
         android:padding="10dp"
         android:text="@string/iniciar_sesi_n"
         android:textColor="#212121"
         app:layout_constraintBaseline_toBaselineOf="@+id/btnRegistrarse"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/chkBoxMantenerSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="12dp"
+        android:minHeight="48dp"
+        android:text="Mantener sesión iniciada"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtContrasenna" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
