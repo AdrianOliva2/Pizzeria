@@ -1,12 +1,9 @@
 package com.example.pizzeria
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
@@ -14,20 +11,17 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pizzeria.clases.Pizza
 import com.example.pizzeria.enums.Tamanno
 
-class PizzasPredeterminadasActivity : Activity(), AdapterView.OnItemClickListener {
+class PizzasPredeterminadasActivity : PlantillaActivity(), AdapterView.OnItemClickListener {
 
-    private var intExtra: Int = -1
-    private lateinit var layout: ConstraintLayout
     private lateinit var lstPizzasPredeterminadas: ListView
     private lateinit var pizzas: Map<String, Pizza>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pizzas_predeterminadas)
-        layout = findViewById(R.id.ctrLayout4)
-        intExtra = intent.getIntExtra("colorFondo", -1)
-        if (intExtra != -1) {
-            layout.setBackgroundColor(intExtra)
+        if (backgroundColor != -1) {
+            val layout: ConstraintLayout = findViewById(R.id.ctrLayout7)
+            layout.setBackgroundColor(backgroundColor)
         }
         lstPizzasPredeterminadas = findViewById(R.id.lstPizzasPredeterminadas)
         val pizzaBBQFamiliar = Pizza(arrayListOf("Bacon", "Pollo", "Queso", "Carne de vacuno"), arrayListOf("Barbacoa"), Tamanno.FAMILIAR)
@@ -45,11 +39,10 @@ class PizzasPredeterminadasActivity : Activity(), AdapterView.OnItemClickListene
         if (pizza != null) {
             val intent = Intent(this, ConfirmacionPedidoActivity::class.java)
             intent.putExtra("pizza", pizza)
-            if (intExtra != -1) intent.putExtra("colorFondo", (layout.background as ColorDrawable).color)
             startActivity(intent)
             finish()
         }
     }
 
-    override fun onBackPressed() {}
+    
 }

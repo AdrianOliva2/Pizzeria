@@ -1,8 +1,6 @@
 package com.example.pizzeria
 
-import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -10,19 +8,17 @@ import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pizzeria.clases.Usuario
 
-class LoggedInActivity : Activity(), View.OnClickListener {
+class LoggedInActivity : PlantillaActivity(), View.OnClickListener {
 
     private var usuario: Usuario? = null
     private lateinit var layout: ConstraintLayout
-    private var intExtra: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logged_in)
-        layout = findViewById(R.id.ctrLayout2)
-        intExtra = intent.getIntExtra("colorFondo", -1)
-        if (intExtra != -1) {
-            layout.setBackgroundColor(intExtra)
+        if (backgroundColor != -1) {
+            layout = findViewById(R.id.ctrLayout3)
+            layout.setBackgroundColor(backgroundColor)
         }
         usuario = intent.getSerializableExtra("usuario") as Usuario?
         val btnWeb: Button = findViewById(R.id.btnWeb)
@@ -42,19 +38,15 @@ class LoggedInActivity : Activity(), View.OnClickListener {
                 finish()
             }
             R.id.btnPedido -> {
-                val intent = Intent(this, PedidoActivity::class.java)
-                if (intExtra != -1) intent.putExtra("colorFondo", (layout.background as ColorDrawable).color)
-                startActivity(intent)
+                startActivity(Intent(this, PedidoActivity::class.java))
                 finish()
             }
             R.id.btnConfig -> {
-                val intent = Intent(this, ConfigActivity::class.java)
-                if (intExtra != -1) intent.putExtra("colorFondo", (layout.background as ColorDrawable).color)
-                startActivity(intent)
+                startActivity(Intent(this, ConfigActivity::class.java))
                 finish()
             }
         }
     }
 
-    override fun onBackPressed() {}
+    
 }

@@ -1,20 +1,18 @@
 package com.example.pizzeria
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pizzeria.clases.Usuario
 import com.example.pizzeria.dao.DAOUsuarios
 import java.util.Base64
-import kotlin.system.exitProcess
 
-class MainActivity : Activity(), View.OnClickListener {
+class MainActivity : PlantillaActivity(), View.OnClickListener {
 
     private lateinit var usuarios: List<Usuario>
     private lateinit var txtNombre: EditText
@@ -24,6 +22,11 @@ class MainActivity : Activity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        super.createFromTemplate()
+        if (backgroundColor != -1) {
+            val layout: ConstraintLayout = findViewById(R.id.ctrLayout1)
+            layout.setBackgroundColor(backgroundColor)
+        }
         daoUsuarios = DAOUsuarios.getInstance()
         if (daoUsuarios != null) usuarios = DAOUsuarios.getInstance()?.getUsuarios()!!
         txtNombre = findViewById(R.id.txtNombre)

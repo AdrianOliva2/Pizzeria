@@ -1,7 +1,7 @@
 package com.example.pizzeria
 
 import android.annotation.SuppressLint
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -13,20 +13,17 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 
 
-class ConfigActivity : Activity(), View.OnClickListener {
+class ConfigActivity : PlantillaActivity(), View.OnClickListener {
 
-    private var intExtra: Int = -1
     lateinit var cmbBoxColor: Spinner
-    lateinit var layout: ConstraintLayout
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_config)
-        layout = findViewById(R.id.ctrLayout)
-        intExtra = intent.getIntExtra("colorFondo", -1)
-        if (intExtra != -1) {
-            layout.setBackgroundColor(intExtra)
+        if (backgroundColor != -1) {
+            val layout: ConstraintLayout = findViewById(R.id.ctrLayout5)
+            layout.setBackgroundColor(backgroundColor)
         }
         cmbBoxColor = findViewById(R.id.cmbBoxColor)
         val btnAplicar: Button = findViewById(R.id.btnAplicar)
@@ -39,30 +36,34 @@ class ConfigActivity : Activity(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.btnAplicar -> {
+                var color = 0
                 when (cmbBoxColor.selectedItem as String) {
                     "Rojo" -> {
-                        layout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
+                        color = ContextCompat.getColor(this, android.R.color.holo_red_light)
                     }
                     "Verde" -> {
-                        layout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_green_light))
+                        color = ContextCompat.getColor(this, android.R.color.holo_green_light)
                     }
                     "Azul" -> {
-                        layout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_blue_light))
+                        color = ContextCompat.getColor(this, android.R.color.holo_blue_light)
                     }
                     "Negro" -> {
-                        layout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.black))
+                        color = ContextCompat.getColor(this, android.R.color.black)
                     }
                     "Gris" -> {
-                        layout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray))
+                        color = ContextCompat.getColor(this, android.R.color.darker_gray)
                     }
                 }
-                val intent = Intent(this, LoggedInActivity::class.java)
-                intent.putExtra("colorFondo", (layout.background as ColorDrawable).color)
-                startActivity(intent)
+                val sharedPref = this?.getSharedPreferences("Config", Context.MODE_PRIVATE) ?: return
+                with (sharedPref.edit()) {
+                    putInt("backgroundColor", color)
+                    apply()
+                }
+                backgroundColor = color
+                startActivity(Intent(this, LoggedInActivity::class.java))
                 finish()
             }
         }
     }
 
-    override fun onBackPressed() { }
 }

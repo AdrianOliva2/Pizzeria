@@ -8,10 +8,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pizzeria.clases.Usuario
 import com.example.pizzeria.dao.DAOUsuarios
 
-class RegisterActivity : Activity(), View.OnClickListener {
+class RegisterActivity : PlantillaActivity(), View.OnClickListener {
 
     private var txtNombre: EditText? = null
     private var txtContrasenna: EditText? = null
@@ -19,6 +20,10 @@ class RegisterActivity : Activity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+        if (backgroundColor != -1) {
+            val layout: ConstraintLayout = findViewById(R.id.ctrLayout2)
+            layout.setBackgroundColor(backgroundColor)
+        }
         txtNombre = findViewById(R.id.txtNombre2)
         txtContrasenna = findViewById(R.id.txtContrasenna2)
         val btnIniciarSesion: Button = findViewById(R.id.btnIniciarSesion2)
@@ -68,5 +73,5 @@ class RegisterActivity : Activity(), View.OnClickListener {
         }
     }
 
-    override fun onBackPressed() {}
+    
 }
