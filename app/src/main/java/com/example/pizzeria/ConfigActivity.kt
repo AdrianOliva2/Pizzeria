@@ -13,6 +13,7 @@ import android.widget.Spinner
 import android.widget.Switch
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import com.example.pizzeria.dao.DAOUsuarios
 
 
@@ -112,7 +113,7 @@ class ConfigActivity : PlantillaActivity(), View.OnClickListener {
                         swPizzaFavorita.isChecked = true
                         backgroundColor = -1
                         pizzaFavorita = true
-                        DAOUsuarios.getInstance()?.resetearUsuarios()
+                        DAOUsuarios.getInstance().resetearUsuarios()
                         startActivity(Intent(this, MainActivity::class.java))
                         finish()
                     }
