@@ -10,9 +10,12 @@ import android.view.View
 import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pizzeria.clases.Pizza
+import com.example.pizzeria.clases.Usuario
 import com.google.gson.Gson
 
 class PedidoActivity : PlantillaActivity(), View.OnClickListener {
+
+    private var usuario: Usuario? = null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +27,7 @@ class PedidoActivity : PlantillaActivity(), View.OnClickListener {
         } else {
             layout.background = null
         }
+        usuario = intent.getSerializableExtra("usuario") as Usuario?
         val btnFavorita: Button = findViewById(R.id.btnFavorita)
         val btnPersonalizada: Button = findViewById(R.id.btnPersonalizada)
         val btnPredeterminadas: Button = findViewById(R.id.btnPredeterminadas)
@@ -40,6 +44,7 @@ class PedidoActivity : PlantillaActivity(), View.OnClickListener {
                 if (ultimaPizzaJson != ""){
                     val intent = Intent(this, ConfirmacionPedidoActivity::class.java)
                     intent.putExtra("pizza", Gson().fromJson(ultimaPizzaJson, Pizza::class.java))
+                    intent.putExtra("usuario", usuario)
                     startActivity(intent)
                     finish()
                 } else {
@@ -51,11 +56,15 @@ class PedidoActivity : PlantillaActivity(), View.OnClickListener {
                 }
             }
             R.id.btnPersonalizada -> {
-                startActivity(Intent(this, PizzasPersonalizadasActivity::class.java))
+                val intent = Intent(this, PizzasPersonalizadasActivity::class.java)
+                intent.putExtra("usuario", usuario)
+                startActivity(intent)
                 finish()
             }
             R.id.btnPredeterminadas -> {
-                startActivity(Intent(this, PizzasPredeterminadasActivity::class.java))
+                val intent = Intent(this, PizzasPredeterminadasActivity::class.java)
+                intent.putExtra("usuario", usuario)
+                startActivity(intent)
                 finish()
             }
         }

@@ -17,14 +17,6 @@ public class Usuario implements Serializable {
         this.contrasenna = contrasenya;
     }
 
-    private String cifrar(String contrasenna) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return Base64.getEncoder().encodeToString(contrasenna.getBytes(StandardCharsets.UTF_8));
-        } else {
-            return contrasenna;
-        }
-    }
-
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
@@ -33,9 +25,7 @@ public class Usuario implements Serializable {
         return this.nombreUsuario;
     }
 
-    public void setContrasenna(String contrasenna) {
-        this.contrasenna = cifrar(contrasenna);
-    }
+    public void setContrasenna(String contrasenna) { this.contrasenna = Contrasenna.Companion.cifrar(contrasenna);}
 
     public String getContrasenna() {
         return this.contrasenna;

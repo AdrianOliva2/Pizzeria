@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.pizzeria.clases.Contrasenna
 import com.example.pizzeria.clases.Usuario
 import com.example.pizzeria.dao.DAOUsuarios
 import java.io.File
@@ -21,10 +22,12 @@ class MainActivity : PlantillaActivity(), View.OnClickListener {
     private lateinit var txtNombre: EditText
     private lateinit var txtContrasenna: EditText
     private lateinit var chkBoxMantenerSesion: CheckBox
+    private lateinit var dbHelper: DBHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        dbHelper = DBHelper(this)
         super.createFromTemplate()
         val layout: ConstraintLayout = findViewById(R.id.ctrLayout1)
         if (backgroundColor != -1) {
@@ -40,10 +43,15 @@ class MainActivity : PlantillaActivity(), View.OnClickListener {
         btnIniciarSesion.setOnClickListener(this)
         btnRegistro.setOnClickListener(this)
         val sharedPreferences: SharedPreferences = getSharedPreferences("Config", Context.MODE_PRIVATE)
-        if (sharedPreferences.getString("mantenerNombreUsuario", "") != "" && sharedPreferences.getString("mantenerContrasenna", "") != "") {
-            val intent = Intent(this, LoggedInActivity::class.java)
-            intent.putExtra("usuario", Usuario(sharedPreferences.getString("mantenerNombreUsuario", ""), sharedPreferences.getString("mantenerContrasenna", "")))
-            startActivity(intent)
+        val nomUsuario: String? = sharedPreferences.getString("mantenerNombreUsuario", "")
+        val contraUsuario: String? = sharedPreferences.getString("mantenerContrasenna", "")
+        if (nomUsuario != null && nomUsuario != "" && contraUsuario != null && contraUsuario != "") {
+            val usuario = Usuario(nomUsuario, contraUsuario)
+            if (dbHelper.usuarioExiste(usuario) && dbHelper.getContrasennaFromUsuario(usuario) != null && dbHelper.getContrasennaFromUsuario(usuario) != "") {
+                val intent = Intent(this, LoggedInActivity::class.java)
+                intent.putExtra("usuario", usuario)
+                startActivity(intent)
+            }
         }
     }
 
@@ -56,22 +64,13 @@ class MainActivity : PlantillaActivity(), View.OnClickListener {
         alerta.show()
     }
 
-    fun cifrar(texto: String): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Base64.getEncoder().encodeToString(texto.toByteArray(Charsets.UTF_8))
-        } else {
-            texto
-        }
-    }
-
     override fun onClick(view: View) {
         when (view.id) {
             R.id.btnIniciarSesion2 -> {
                 if (txtNombre.text.toString() != "" && txtContrasenna.text.toString() != "") {
                     val usuario: Usuario = Usuario(txtNombre.text.toString(), txtContrasenna.text.toString())
-                    val dbHelper = DBHelper(this)
                     if (dbHelper.usuarioExiste(usuario)) {
-                        if (cifrar(txtContrasenna.text.toString()) == usuario.getContrasenna()) {
+                        if (Contrasenna.cifrar(txtContrasenna.text.toString()) == dbHelper.getContrasennaFromUsuario(usuario)) {
                             if (chkBoxMantenerSesion.isChecked) {
                                 val editor: SharedPreferences.Editor = getSharedPreferences("Config", Context.MODE_PRIVATE).edit()
                                 editor.putString("mantenerNombreUsuario", txtNombre.text.toString())

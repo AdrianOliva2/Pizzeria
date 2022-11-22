@@ -10,11 +10,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pizzeria.clases.Pizza
+import com.example.pizzeria.clases.Usuario
 import com.google.gson.Gson
 
 class ConfirmacionPedidoActivity : PlantillaActivity(), View.OnClickListener {
 
     private lateinit var pizza: Pizza
+    private var usuario: Usuario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +27,7 @@ class ConfirmacionPedidoActivity : PlantillaActivity(), View.OnClickListener {
         } else {
             layout.background = null
         }
+        usuario = intent.getSerializableExtra("usuario") as Usuario?
         pizza = intent.getSerializableExtra("pizza") as Pizza
         val lblPedido: TextView = findViewById(R.id.lblPedido)
         val btnConfirmarPedido: Button = findViewById(R.id.btnConfirmarPedido)
@@ -32,7 +35,10 @@ class ConfirmacionPedidoActivity : PlantillaActivity(), View.OnClickListener {
         lblPedido.text = pizza.toString()
     }
 
-    override fun onClick(p0: View?) {
+    override fun onClick(view: View?) {
+        val dbHelper = DBHelper(this)
+        val idPizza = dbHelper.insertarPizza(pizza)
+        dbHelper.insertarPizzaUsuario(idPizza, usuario)
         val toast: Toast = Toast.makeText(this, "Has comprado una pizza por " + pizza.calcularPrecio() + "€", Toast.LENGTH_LONG)
         toast.show()
         val sharedPref = this?.getSharedPreferences("Config", Context.MODE_PRIVATE) ?: return
@@ -40,7 +46,9 @@ class ConfirmacionPedidoActivity : PlantillaActivity(), View.OnClickListener {
             putString("ultimaPizza", Gson().toJson(pizza, Pizza::class.java))
             apply()
         }
-        startActivity(Intent(this, LoggedInActivity::class.java))
+        val intent = Intent(this, LoggedInActivity::class.java)
+        intent.putExtra("usuario", usuario)
+        startActivity(intent)
         finish()
     }
 }

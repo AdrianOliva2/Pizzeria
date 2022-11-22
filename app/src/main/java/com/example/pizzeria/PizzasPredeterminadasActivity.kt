@@ -9,12 +9,14 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pizzeria.clases.Pizza
+import com.example.pizzeria.clases.Usuario
 import com.example.pizzeria.enums.Tamanno
 
 class PizzasPredeterminadasActivity : PlantillaActivity(), AdapterView.OnItemClickListener {
 
     private lateinit var lstPizzasPredeterminadas: ListView
     private lateinit var pizzas: Map<String, Pizza>
+    private var usuario: Usuario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +27,7 @@ class PizzasPredeterminadasActivity : PlantillaActivity(), AdapterView.OnItemCli
         } else {
             layout.background = null
         }
+        usuario = intent.getSerializableExtra("usuario") as Usuario?
         lstPizzasPredeterminadas = findViewById(R.id.lstPizzasPredeterminadas)
         val pizzaBBQFamiliar = Pizza(arrayListOf("Bacon", "Pollo", "Queso", "Carne de vacuno"), arrayListOf("Barbacoa"), Tamanno.FAMILIAR)
         val pizzaBBQMediana = Pizza(arrayListOf("Bacon", "Pollo", "Queso", "Carne de vacuno"), arrayListOf("Barbacoa"), Tamanno.MEDIANA)
@@ -41,10 +44,10 @@ class PizzasPredeterminadasActivity : PlantillaActivity(), AdapterView.OnItemCli
         if (pizza != null) {
             val intent = Intent(this, ConfirmacionPedidoActivity::class.java)
             intent.putExtra("pizza", pizza)
+            intent.putExtra("usuario", usuario)
             startActivity(intent)
             finish()
         }
     }
-
     
 }

@@ -14,6 +14,7 @@ import android.widget.RadioButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import com.example.pizzeria.clases.Pizza
+import com.example.pizzeria.clases.Usuario
 import com.example.pizzeria.enums.Tamanno
 
 class PizzasPersonalizadasActivity : PlantillaActivity(), View.OnClickListener {
@@ -37,6 +38,7 @@ class PizzasPersonalizadasActivity : PlantillaActivity(), View.OnClickListener {
     private lateinit var rdBtnBarbacoa: RadioButton
     private lateinit var rdBtnSpicyBBQ: RadioButton
     private lateinit var rdBtnQuesoChedar: RadioButton
+    private var usuario: Usuario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +49,8 @@ class PizzasPersonalizadasActivity : PlantillaActivity(), View.OnClickListener {
         } else {
             layout.background = null
         }
+        usuario = intent.getSerializableExtra("usuario") as Usuario?
+
         rdBtnFamiliar = findViewById(R.id.rdBtnFamiliar)
         rdBtnMediana = findViewById(R.id.rdBtnMediana)
         rdBtnPequenna = findViewById(R.id.rdBtnPequenna)
@@ -109,10 +113,11 @@ class PizzasPersonalizadasActivity : PlantillaActivity(), View.OnClickListener {
                             else if (rdBtnSpicyBBQ.isChecked) salsas += rdBtnSpicyBBQ.text.toString()
                             else if (rdBtnQuesoChedar.isChecked) salsas += rdBtnQuesoChedar.text.toString()
 
-                            pizza.setSalsas(salsas)
+                            pizza.salsas = salsas
 
                             val intent = Intent(this, ConfirmacionPedidoActivity::class.java)
                             intent.putExtra("pizza", pizza)
+                            intent.putExtra("usuario", usuario)
                             startActivity(intent)
                             finish()
                         }

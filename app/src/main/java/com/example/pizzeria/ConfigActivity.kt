@@ -14,6 +14,7 @@ import android.widget.Switch
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import com.example.pizzeria.clases.Usuario
 import com.example.pizzeria.dao.DAOUsuarios
 
 
@@ -22,6 +23,7 @@ class ConfigActivity : PlantillaActivity(), View.OnClickListener {
     lateinit var cmbBoxColor: Spinner
     lateinit var swPizzaFavorita: Switch
     private lateinit var sharedPreferences: SharedPreferences
+    private var usuario: Usuario? = null
 
     @SuppressLint("MissingInflatedId", "MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +36,7 @@ class ConfigActivity : PlantillaActivity(), View.OnClickListener {
         } else {
             layout.background = null
         }
+        usuario = intent.getSerializableExtra("usuario") as Usuario?
         cmbBoxColor = findViewById(R.id.cmbBoxColor)
         val btnAplicar: Button = findViewById(R.id.btnAplicar)
         val btnVolver: Button = findViewById(R.id.btnVolver)
@@ -84,7 +87,9 @@ class ConfigActivity : PlantillaActivity(), View.OnClickListener {
                 }
                 backgroundColor = color
                 pizzaFavorita = swPizzaFavorita.isChecked
-                startActivity(Intent(this, LoggedInActivity::class.java))
+                val intent = Intent(this, LoggedInActivity::class.java)
+                intent.putExtra("usuario", usuario)
+                startActivity(intent)
                 finish()
             }
 
@@ -95,12 +100,16 @@ class ConfigActivity : PlantillaActivity(), View.OnClickListener {
                     editor.remove("mantenerContrasenna")
                     editor.apply()
                 }
-                startActivity(Intent(this, MainActivity::class.java))
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("usuario", usuario)
+                startActivity(intent)
                 finish()
             }
 
             R.id.btnVolver -> {
-                startActivity(Intent(this, LoggedInActivity::class.java))
+                val intent = Intent(this, LoggedInActivity::class.java)
+                intent.putExtra("usuario", usuario)
+                startActivity(intent)
                 finish()
             }
 
@@ -114,7 +123,9 @@ class ConfigActivity : PlantillaActivity(), View.OnClickListener {
                         backgroundColor = -1
                         pizzaFavorita = true
                         DAOUsuarios.getInstance().resetearUsuarios()
-                        startActivity(Intent(this, MainActivity::class.java))
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.putExtra("usuario", usuario)
+                        startActivity(intent)
                         finish()
                     }
                 }

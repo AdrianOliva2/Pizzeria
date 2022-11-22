@@ -36,15 +36,20 @@ class LoggedInActivity : PlantillaActivity(), View.OnClickListener {
             R.id.btnWeb -> {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse("https://www.telepizza.es/")
+                intent.putExtra("usuario", usuario)
                 startActivity(intent)
                 finish()
             }
             R.id.btnPedido -> {
-                startActivity(Intent(this, PedidoActivity::class.java))
+                val intent = Intent(this, PedidoActivity::class.java)
+                intent.putExtra("usuario", usuario)
+                startActivity(intent)
                 finish()
             }
             R.id.btnConfig -> {
-                startActivity(Intent(this, ConfigActivity::class.java))
+                val intent = Intent(this, ConfigActivity::class.java)
+                intent.putExtra("usuario", usuario)
+                startActivity(intent)
                 finish()
             }
         }

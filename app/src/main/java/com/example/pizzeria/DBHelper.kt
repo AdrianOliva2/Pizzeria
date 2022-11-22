@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.pizzeria.clases.Contrasenna
+import com.example.pizzeria.clases.Pizza
 import com.example.pizzeria.clases.Usuario
 
 class DBHelper(private val context: Context) : SQLiteOpenHelper(context, dbName, null, version) {
@@ -30,8 +32,8 @@ class DBHelper(private val context: Context) : SQLiteOpenHelper(context, dbName,
 
         db?.execSQL("CREATE TABLE \"PIZZA_INGREDIENTE\" (\n" +
                 "\t\"ID_PIZZA\"\tINTEGER NOT NULL,\n" +
-                "\t\"ID_INGREDIENTE\"\tINTEGER NOT NULL,\n" +
-                "\tPRIMARY KEY(\"ID_PIZZA\",\"ID_INGREDIENTE\")\n" +
+                "\t\"NOMBRE_INGREDIENTE\"\tTEXT NOT NULL,\n" +
+                "\tPRIMARY KEY(\"ID_PIZZA\",\"NOMBRE_INGREDIENTE\")\n" +
                 ");")
 
         db?.execSQL("CREATE TABLE \"PIZZA_USUARIO\" (\n" +
@@ -54,8 +56,29 @@ class DBHelper(private val context: Context) : SQLiteOpenHelper(context, dbName,
         createDB(db)
     }
 
+    private fun getIdFromUsuario(usuario: Usuario?): Int {
+        var id = -1
+        if (usuario != null) {
+            try {
+                val db: SQLiteDatabase = this.readableDatabase
+                val cursorUsuario: Cursor = db.rawQuery(
+                    "SELECT (\"ID_USUARIO\") FROM USUARIO WHERE NOMBRE_USUARIO = \"${usuario.nombreUsuario.lowercase()}\"",
+                    null
+                )
+                if (cursorUsuario.moveToFirst()) {
+                    id = cursorUsuario.getInt(0)
+                }
+                cursorUsuario.close()
+                println("Id: $id")
+            } catch (e: Exception) {
+                println("Algo falló")
+            }
+        }
+        return id
+    }
+
     private fun getMaxIdFromUsuario(): Int {
-        var id = 1
+        var id = 0
         try {
             val db: SQLiteDatabase = this.readableDatabase
             val cursorUsuario: Cursor = db.rawQuery("SELECT MAX(\"ID_USUARIO\") FROM USUARIO", null)
@@ -77,8 +100,8 @@ class DBHelper(private val context: Context) : SQLiteOpenHelper(context, dbName,
             var contentValues = ContentValues()
             val idUsu: Int = getMaxIdFromUsuario() + 1
             contentValues.put("ID_USUARIO", idUsu)
-            contentValues.put("NOMBRE_USUARIO", usuario.nombreUsuario)
-            contentValues.put("CONTRASENNA", usuario.contrasenna)
+            contentValues.put("NOMBRE_USUARIO", usuario.nombreUsuario.lowercase())
+            contentValues.put("CONTRASENNA", Contrasenna.cifrar(usuario.contrasenna))
             id = db.insert("USUARIO", null, contentValues)
 
             println("Se añadio bien")
@@ -94,10 +117,9 @@ class DBHelper(private val context: Context) : SQLiteOpenHelper(context, dbName,
 
         try {
             val db: SQLiteDatabase = this.readableDatabase
-            val cursorUsuario: Cursor = db.rawQuery("SELECT * FROM USUARIO WHERE NOMBRE_USUARIO = \"${usuario.nombreUsuario}\"", null)
+            val cursorUsuario: Cursor = db.rawQuery("SELECT * FROM USUARIO WHERE NOMBRE_USUARIO = \"${usuario.nombreUsuario.lowercase()}\"", null)
             if (cursorUsuario.moveToFirst()) {
-                println("${cursorUsuario.getString(1)} - ${usuario.nombreUsuario}")
-                if (cursorUsuario.getString(1).equals(usuario.nombreUsuario, true)) existe = true
+                if (cursorUsuario.getString(1).equals(usuario.nombreUsuario.lowercase(), true)) existe = true
             }
             
             println("Usuario existe $existe")
@@ -108,8 +130,111 @@ class DBHelper(private val context: Context) : SQLiteOpenHelper(context, dbName,
         return existe
     }
 
-    fun getContrasennaFromUsuario(usuario: Usuario) {
+    fun getContrasennaFromUsuario(usuario: Usuario):String? {
+        var contrasenna: String? = null
 
+        try {
+            val db: SQLiteDatabase = this.readableDatabase
+            val cursorUsuario: Cursor = db.rawQuery("SELECT (\"CONTRASENNA\") FROM USUARIO WHERE NOMBRE_USUARIO = \"${usuario.nombreUsuario.lowercase()}\"", null)
+            if (cursorUsuario.moveToFirst()) {
+                contrasenna = cursorUsuario.getString(0)
+            }
+            cursorUsuario.close()
+        } catch (e: Exception) {
+            println("Algo falló")
+        }
+
+        return contrasenna
+    }
+
+    private fun insertarIngredientes(ingredientes: List<String>):Long {
+        var id: Long = 0
+        try {
+            var db: SQLiteDatabase = this.writableDatabase
+            for (ingrediente: String in ingredientes) {
+                var contentValues = ContentValues()
+                contentValues.put("NOMBRE_INGREDIENTE", ingrediente)
+                id = db.insert("INGREDIENTE", null, contentValues)
+
+                println("Se añadio bien")
+            }
+        } catch (e: Exception) {
+            println("Algo falló")
+        }
+        return id
+    }
+
+    private fun getMaxIdFromPizza(): Int {
+        var id = 1
+        try {
+            val db: SQLiteDatabase = this.readableDatabase
+            val cursorPizza: Cursor = db.rawQuery("SELECT MAX(\"ID_PIZZA\") FROM PIZZA", null)
+            if (cursorPizza.moveToFirst()) {
+                id = cursorPizza.getInt(0)
+            }
+            cursorPizza.close()
+            println("Id máxima: $id")
+        } catch (e: Exception) {
+            println("Algo falló")
+        }
+        return id
+    }
+
+    fun insertarPizza(pizza: Pizza):Long {
+        insertarIngredientes(pizza.ingredientes)
+
+        var id: Long = 0
+        try {
+            var db: SQLiteDatabase = this.writableDatabase
+            var contentValues = ContentValues()
+            val idPizza: Int = getMaxIdFromPizza() + 1
+            contentValues.put("ID_PIZZA", idPizza)
+            contentValues.put("PRECIO", pizza.calcularPrecio())
+            contentValues.put("TAMANNO", pizza.tamanno.toString())
+            contentValues.put("SALSA", pizza.salsas[0])
+            id = db.insert("PIZZA", null, contentValues)
+
+            println("Se añadio bien")
+        } catch (e: Exception) {
+            println("Algo falló")
+        }
+
+        insertarPizzaIngredientes(id, pizza.ingredientes)
+        return id
+    }
+
+    private fun insertarPizzaIngredientes(idPizza: Long, ingredientes: List<String>): Long {
+        var id: Long = 0
+        try {
+            var db: SQLiteDatabase = this.writableDatabase
+            for (ingrediente: String in ingredientes) {
+                var contentValues = ContentValues()
+                contentValues.put("ID_PIZZA", idPizza)
+                contentValues.put("NOMBRE_INGREDIENTE", ingrediente)
+                id = db.insert("PIZZA_INGREDIENTE", null, contentValues)
+
+                println("Se añadio bien")
+            }
+        } catch (e: Exception) {
+            println("Algo falló")
+        }
+        return id
+    }
+
+    fun insertarPizzaUsuario(idPizza: Long, usuario: Usuario?):Long {
+        var id: Long = 0
+        try {
+            var db: SQLiteDatabase = this.writableDatabase
+            var contentValues = ContentValues()
+            contentValues.put("ID_PIZZA", idPizza)
+            contentValues.put("ID_USUARIO", getIdFromUsuario(usuario))
+            id = db.insert("PIZZA_USUARIO", null, contentValues)
+
+            println("Se añadio bien")
+        } catch (e: Exception) {
+            println("Algo falló")
+        }
+        return id
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, old: Int, new: Int) {
@@ -121,4 +246,5 @@ class DBHelper(private val context: Context) : SQLiteOpenHelper(context, dbName,
 
         createDB(db)
     }
+
 }
