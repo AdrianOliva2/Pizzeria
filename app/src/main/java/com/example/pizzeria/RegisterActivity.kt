@@ -42,25 +42,26 @@ class RegisterActivity : PlantillaActivity(), View.OnClickListener {
             }
             R.id.btnRegistrarse2 -> {
                 if (txtNombre?.text.toString() != "") {
-                    val daoUsuarios: DAOUsuarios? = DAOUsuarios.getInstance()
-                    if (daoUsuarios != null && daoUsuarios.insertarUsuario(Usuario(txtNombre?.text.toString(), txtContrasenna?.text.toString()))) {
-                        if (txtContrasenna?.text.toString() != "") {
-                            val intent: Intent = Intent(this, LoggedInActivity::class.java)
-                            intent.putExtra("usuario", Usuario(txtNombre?.text.toString(), txtContrasenna?.text.toString()))
+                    if (txtContrasenna?.text.toString() != "") {
+                        val dbHelper = DBHelper(this)
+                        val usuario = Usuario(txtNombre?.text.toString(), txtContrasenna?.text.toString())
+                        if (!dbHelper.usuarioExiste(usuario)) {
+                            dbHelper.registrarUsuario(usuario)
+                            val intent = Intent(this, LoggedInActivity::class.java)
+                            intent.putExtra("usuario", usuario)
                             startActivity(intent)
                             finish()
                         } else {
                             val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
-                            alertDialog.setMessage("Introduce la contraseña")
+                            alertDialog.setMessage("El usuario \"${txtNombre?.text}\" ya existe!!")
                             alertDialog.setPositiveButton("Ok") {_, _ ->}
                             alertDialog.create()
                             alertDialog.show()
                         }
                     } else {
                         val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
-                        alertDialog.setMessage("Ya estás registrado, ¿quieres iniciar sesión?")
-                        alertDialog.setPositiveButton("Si") {_, _ -> startActivity(Intent(this, MainActivity::class.java)); finish()}
-                        alertDialog.setNegativeButton("No") {_, _ -> txtNombre?.setText(""); txtContrasenna?.setText("")}
+                        alertDialog.setMessage("Introduce la contraseña")
+                        alertDialog.setPositiveButton("Ok") {_, _ ->}
                         alertDialog.create()
                         alertDialog.show()
                     }

@@ -4,11 +4,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
@@ -16,15 +13,14 @@ import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pizzeria.clases.Usuario
 import com.example.pizzeria.dao.DAOUsuarios
+import java.io.File
 import java.util.Base64
 
 class MainActivity : PlantillaActivity(), View.OnClickListener {
 
-    private lateinit var usuarios: List<Usuario>
     private lateinit var txtNombre: EditText
     private lateinit var txtContrasenna: EditText
     private lateinit var chkBoxMantenerSesion: CheckBox
-    private var daoUsuarios: DAOUsuarios? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +32,11 @@ class MainActivity : PlantillaActivity(), View.OnClickListener {
         } else {
             layout.background = null
         }
-        daoUsuarios = DAOUsuarios.getInstance()
-        if (daoUsuarios != null) usuarios = DAOUsuarios.getInstance()?.getUsuarios()!!
-        txtNombre = findViewById(R.id.txtNombre)
-        txtContrasenna = findViewById(R.id.txtContrasenna)
+        txtNombre = findViewById(R.id.txtNombre2)
+        txtContrasenna = findViewById(R.id.txtContrasenna2)
         chkBoxMantenerSesion = findViewById(R.id.chkBoxMantenerSesion)
-        val btnIniciarSesion: Button = findViewById(R.id.btnIniciarSesion)
-        val btnRegistro: Button = findViewById(R.id.btnRegistrarse)
+        val btnIniciarSesion: Button = findViewById(R.id.btnIniciarSesion2)
+        val btnRegistro: Button = findViewById(R.id.btnRegistrarse2)
         btnIniciarSesion.setOnClickListener(this)
         btnRegistro.setOnClickListener(this)
         val sharedPreferences: SharedPreferences = getSharedPreferences("Config", Context.MODE_PRIVATE)
@@ -72,10 +66,11 @@ class MainActivity : PlantillaActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.btnIniciarSesion -> {
+            R.id.btnIniciarSesion2 -> {
                 if (txtNombre.text.toString() != "" && txtContrasenna.text.toString() != "") {
-                    val usuario: Usuario? = daoUsuarios?.getUsuario(Usuario(txtNombre.text.toString(), txtContrasenna.text.toString()))
-                    if (usuario != null) {
+                    val usuario: Usuario = Usuario(txtNombre.text.toString(), txtContrasenna.text.toString())
+                    val dbHelper = DBHelper(this)
+                    if (dbHelper.usuarioExiste(usuario)) {
                         if (cifrar(txtContrasenna.text.toString()) == usuario.getContrasenna()) {
                             if (chkBoxMantenerSesion.isChecked) {
                                 val editor: SharedPreferences.Editor = getSharedPreferences("Config", Context.MODE_PRIVATE).edit()
@@ -113,7 +108,7 @@ class MainActivity : PlantillaActivity(), View.OnClickListener {
                 }
             }
 
-            R.id.btnRegistrarse -> {
+            R.id.btnRegistrarse2 -> {
                 startActivity(Intent(this, RegisterActivity::class.java))
                 finish()
             }

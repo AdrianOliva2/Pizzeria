@@ -12,7 +12,7 @@ public class DAOUsuarios {
 
     private DAOUsuarios() {
         usuarios = new ArrayList();
-        usuarios.add(new Usuario("Adrian_oliva", "1234Abcd"));
+        usuarios.add(new Usuario("Adrian_oliva", "1234"));
     }
 
     public static DAOUsuarios getInstance() {
