@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.GridLayout
+import android.widget.GridView
 import android.widget.RadioButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
@@ -80,7 +82,8 @@ class PizzasPersonalizadasActivity : PlantillaActivity(), View.OnClickListener {
                         alert.show()
                     } else {
                         var ingredientes: List<String> = ArrayList()
-                        for (chechBox: View in layout.children) {
+                        val gridIngredientes: androidx.gridlayout.widget.GridLayout = findViewById(R.id.gridIngredientes)
+                        for (chechBox: View in gridIngredientes.children) {
                             if (chechBox is CheckBox && chechBox.isChecked) {
                                 ingredientes += chechBox.text.toString()
                                 Log.i("CheckBoxIngrediente", chechBox.text.toString())

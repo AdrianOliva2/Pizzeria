@@ -7,29 +7,39 @@
     android:layout_height="match_parent"
     tools:context=".PedidoActivity">
 
-    <Button
-        android:id="@+id/btnFavorita"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="89dp"
-        android:layout_marginTop="75dp"
-        android:text="@string/favorita"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="225dp"
+        android:layout_height="152dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btnPersonalizada"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/personalizada"
-        app:layout_constraintStart_toStartOf="@+id/btnFavorita"
-        app:layout_constraintTop_toBottomOf="@+id/btnFavorita" />
+        <Button
+            android:id="@+id/btnFavorita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/favorita"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnPredeterminadas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/predeterminadas"
-        app:layout_constraintStart_toStartOf="@+id/btnPersonalizada"
-        app:layout_constraintTop_toBottomOf="@+id/btnPersonalizada" />
+        <Button
+            android:id="@+id/btnPersonalizada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/personalizada"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnFavorita" />
+
+        <Button
+            android:id="@+id/btnPredeterminadas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/predeterminadas"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnPersonalizada" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
