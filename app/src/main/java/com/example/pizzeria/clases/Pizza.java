@@ -28,6 +28,7 @@ public class Pizza implements Serializable {
 
     public Pizza(List<String> ingredientes, Tamanno tamanno) {
         this.ingredientes = ingredientes;
+        this.salsas = new ArrayList();
         this.tamanno = tamanno;
     }
 
